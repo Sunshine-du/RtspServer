@@ -52,6 +52,21 @@ bool H265Source::HandleFrame(MediaChannelId channelId, AVFrame frame)
     uint8_t *frame_buf  = frame.buffer.get();
     uint32_t frame_size = frame.size;
 
+    while (frame_size >= 4 &&
+        frame_buf[0] == 0x00 &&
+        frame_buf[1] == 0x00 &&
+        ((frame_buf[2] == 0x01) ||
+            (frame_buf[2] == 0x00 && frame_buf[3] == 0x01))) {
+
+        if (frame_buf[2] == 0x01) {
+            frame_buf  += 3;
+            frame_size -= 3;
+        } else {
+            frame_buf  += 4;
+            frame_size -= 4;
+        }
+    }
+
     if (frame.timestamp == 0) {
         frame.timestamp = GetTimestamp();
     }
@@ -63,7 +78,7 @@ bool H265Source::HandleFrame(MediaChannelId channelId, AVFrame frame)
         rtp_pkt.size = frame_size + RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE;
         rtp_pkt.last = 1;
 
-        memcpy(rtp_pkt.data.get()+RTP_TCP_HEAD_SIZE+RTP_HEADER_SIZE, frame_buf, frame_size);
+        memcpy(rtp_pkt.data.get() + RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE, frame_buf, frame_size);
 
         if (send_frame_callback_) {
             if (!send_frame_callback_(channelId, rtp_pkt)) {
@@ -91,7 +106,7 @@ bool H265Source::HandleFrame(MediaChannelId channelId, AVFrame frame)
             rtp_pkt.data.get()[RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE + 0] = FU[0];
             rtp_pkt.data.get()[RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE + 1] = FU[1];
             rtp_pkt.data.get()[RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE + 2] = FU[2];
-            memcpy(rtp_pkt.data.get()+RTP_TCP_HEAD_SIZE+RTP_HEADER_SIZE+3, frame_buf, MAX_RTP_PAYLOAD_SIZE-3);
+            memcpy(rtp_pkt.data.get() + RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE + 3, frame_buf, MAX_RTP_PAYLOAD_SIZE-3);
 
             if (send_frame_callback_) {
                 if (!send_frame_callback_(channelId, rtp_pkt)) {
@@ -116,7 +131,7 @@ bool H265Source::HandleFrame(MediaChannelId channelId, AVFrame frame)
             rtp_pkt.data.get()[RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE + 0] = FU[0];
             rtp_pkt.data.get()[RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE + 1] = FU[1];
             rtp_pkt.data.get()[RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE + 2] = FU[2];
-            memcpy(rtp_pkt.data.get()+RTP_TCP_HEAD_SIZE+RTP_HEADER_SIZE+3, frame_buf, frame_size);
+            memcpy(rtp_pkt.data.get() + RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE + 3, frame_buf, frame_size);
 
             if (send_frame_callback_) {
                 if (!send_frame_callback_(channelId, rtp_pkt)) {
