@@ -7,20 +7,20 @@ using namespace xop;
 using namespace std;
 
 RtspServer::RtspServer(EventLoop* loop)
-	: TcpServer(loop)
+    : TcpServer(loop)
 {
 
 }
 
 RtspServer::~RtspServer()
 {
-	
+
 }
 
 std::shared_ptr<RtspServer> RtspServer::Create(xop::EventLoop* loop)
 {
-	std::shared_ptr<RtspServer> server(new RtspServer(loop));
-	return server;
+    std::shared_ptr<RtspServer> server(new RtspServer(loop));
+    return server;
 }
 
 MediaSessionId RtspServer::AddSession(MediaSession* session)
@@ -31,10 +31,10 @@ MediaSessionId RtspServer::AddSession(MediaSession* session)
         return 0;
     }
 
-    std::shared_ptr<MediaSession> media_session(session); 
+    std::shared_ptr<MediaSession> media_session(session);
     MediaSessionId sessionId = media_session->GetMediaSessionId();
-	rtsp_suffix_map_.emplace(std::move(media_session->GetRtspUrlSuffix()), sessionId);
-	media_sessions_.emplace(sessionId, std::move(media_session));
+    rtsp_suffix_map_.emplace(std::move(media_session->GetRtspUrlSuffix()), sessionId);
+    media_sessions_.emplace(sessionId, std::move(media_session));
 
     return sessionId;
 }
@@ -98,7 +98,7 @@ bool RtspServer::PushFrame(MediaSessionId session_id, MediaChannelId channel_id,
 }
 
 TcpConnection::Ptr RtspServer::OnConnect(SOCKET sockfd)
-{	
-	return std::make_shared<RtspConnection>(shared_from_this(), event_loop_->GetTaskScheduler().get(), sockfd);
+{
+    return std::make_shared<RtspConnection>(shared_from_this(), event_loop_->GetTaskScheduler().get(), sockfd);
 }
 

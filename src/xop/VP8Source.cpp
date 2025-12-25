@@ -53,7 +53,7 @@ bool VP8Source::HandleFrame(MediaChannelId channel_id, AVFrame frame)
         frame.timestamp = GetTimestamp();
     }
 
-    // X = R = N = 0; PartID = 0; 
+    // X = R = N = 0; PartID = 0;
     // S = 1 if this is the first (or only) fragment of the frame
     uint8_t vp8_payload_descriptor = 0x10;
 
@@ -75,7 +75,7 @@ bool VP8Source::HandleFrame(MediaChannelId channel_id, AVFrame frame)
         rtp_pkt.data.get()[RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE + 0] = vp8_payload_descriptor;
         memcpy(rtp_pkt.data.get() + RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE + RTP_VPX_HEAD_SIZE, frame_buf, payload_size);
 
-        if (send_frame_callback_) {           
+        if (send_frame_callback_) {
             if (!send_frame_callback_(channel_id, rtp_pkt))
                 return false;
         }

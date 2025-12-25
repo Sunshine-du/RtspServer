@@ -9,7 +9,7 @@
 #include <mutex>
 #include <unordered_map>
 
-#if defined(__linux) || defined(__linux__) 
+#if defined(__linux) || defined(__linux__)
 #include <sys/select.h>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -17,30 +17,30 @@
 #endif
 
 namespace xop
-{	
+{
 
 class SelectTaskScheduler : public TaskScheduler
 {
 public:
-	SelectTaskScheduler(int id = 0);
-	virtual ~SelectTaskScheduler();
+    SelectTaskScheduler(int id = 0);
+    virtual ~SelectTaskScheduler();
 
-	void UpdateChannel(ChannelPtr channel);
-	void RemoveChannel(ChannelPtr& channel);
-	bool HandleEvent(int timeout);
-	
+    void UpdateChannel(ChannelPtr channel);
+    void RemoveChannel(ChannelPtr& channel);
+    bool HandleEvent(int timeout);
+
 private:
-	fd_set fd_read_backup_;
-	fd_set fd_write_backup_;
-	fd_set fd_exp_backup_;
-	SOCKET maxfd_ = 0;
+    fd_set fd_read_backup_;
+    fd_set fd_write_backup_;
+    fd_set fd_exp_backup_;
+    SOCKET maxfd_ = 0;
 
-	bool is_fd_read_reset_ = false;
-	bool is_fd_write_reset_ = false;
-	bool is_fd_exp_reset_ = false;
+    bool is_fd_read_reset_ = false;
+    bool is_fd_write_reset_ = false;
+    bool is_fd_exp_reset_ = false;
 
-	std::mutex mutex_;
-	std::unordered_map<SOCKET, ChannelPtr> channels_;
+    std::mutex mutex_;
+    std::unordered_map<SOCKET, ChannelPtr> channels_;
 };
 
 }

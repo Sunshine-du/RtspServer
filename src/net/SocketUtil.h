@@ -9,7 +9,7 @@
 
 namespace xop
 {
-    
+
 class SocketUtil
 {
 public:

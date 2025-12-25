@@ -18,9 +18,9 @@ using namespace xop;
 using namespace std;
 
 H264Source::H264Source(uint32_t framerate)
-	: framerate_(framerate)
+    : framerate_(framerate)
 {
-    payload_    = 96; 
+    payload_    = 96;
     media_type_ = H264;
     clock_rate_ = 90000;
 }
@@ -53,21 +53,21 @@ bool H264Source::HandleFrame(MediaChannelId channel_id, AVFrame frame)
     uint32_t frame_size = frame.size;
 
     if (frame.timestamp == 0) {
-	    frame.timestamp = GetTimestamp();
-    }    
+        frame.timestamp = GetTimestamp();
+    }
 
     if (frame_size <= MAX_RTP_PAYLOAD_SIZE) {
         RtpPacket rtp_pkt;
-	    rtp_pkt.type = frame.type;
-	    rtp_pkt.timestamp = frame.timestamp;
-	    rtp_pkt.size = frame_size + RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE;
-	    rtp_pkt.last = 1;
+        rtp_pkt.type = frame.type;
+        rtp_pkt.timestamp = frame.timestamp;
+        rtp_pkt.size = frame_size + RTP_TCP_HEAD_SIZE + RTP_HEADER_SIZE;
+        rtp_pkt.last = 1;
         memcpy(rtp_pkt.data.get()+RTP_TCP_HEAD_SIZE+RTP_HEADER_SIZE, frame_buf, frame_size);
 
         if (send_frame_callback_) {
-		    if (!send_frame_callback_(channel_id, rtp_pkt)) {
-			    return false;
-		    }               
+            if (!send_frame_callback_(channel_id, rtp_pkt)) {
+                return false;
+            }
         }
     }
     else {
@@ -114,9 +114,9 @@ bool H264Source::HandleFrame(MediaChannelId channel_id, AVFrame frame)
             memcpy(rtp_pkt.data.get()+RTP_TCP_HEAD_SIZE+RTP_HEADER_SIZE+2, frame_buf, frame_size);
 
             if (send_frame_callback_) {
-			    if (!send_frame_callback_(channel_id, rtp_pkt)) {
-				    return false;
-			    }              
+                if (!send_frame_callback_(channel_id, rtp_pkt)) {
+                    return false;
+                }
             }
         }
     }
@@ -136,4 +136,3 @@ uint32_t H264Source::GetTimestamp()
     return (uint32_t)((time_point.time_since_epoch().count() + 500) / 1000 * 90 );
 //#endif
 }
- 

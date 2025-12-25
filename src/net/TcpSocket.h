@@ -10,7 +10,7 @@
 
 namespace xop
 {
-    
+
 class TcpSocket
 {
 public:
@@ -25,7 +25,7 @@ public:
     void   Close();
     void   ShutdownWrite();
     SOCKET GetSocket() const { return sockfd_; }
-    
+
 private:
     SOCKET sockfd_ = -1;
 };

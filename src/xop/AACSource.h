@@ -33,8 +33,8 @@ public:
 private:
     AACSource(uint32_t samplerate, uint32_t channels, bool has_adts);
 
-    uint32_t samplerate_ = 44100;  
-    uint32_t channels_ = 2;         
+    uint32_t samplerate_ = 44100;
+    uint32_t channels_ = 2;
     bool has_adts_ = true;
 
     static const int ADTS_SIZE = 7;

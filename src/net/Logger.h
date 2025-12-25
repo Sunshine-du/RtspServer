@@ -15,33 +15,33 @@
 namespace xop {
 
 
-enum Priority 
+enum Priority
 {
     LOG_DEBUG, LOG_STATE, LOG_INFO, LOG_WARNING, LOG_ERROR,
-};	
-	
+};
+
 class Logger
 {
 public:
-	Logger &operator=(const Logger &) = delete;
-	Logger(const Logger &) = delete;	
-	static Logger& Instance();
-	~Logger();
+    Logger &operator=(const Logger &) = delete;
+    Logger(const Logger &) = delete;
+    static Logger& Instance();
+    ~Logger();
 
-	void Init(char *pathname = nullptr);
-	void Exit();
+    void Init(char *pathname = nullptr);
+    void Exit();
 
-	void Log(Priority priority, const char* __file, const char* __func, int __line, const char *fmt, ...);
-	void Log2(Priority priority, const char *fmt, ...);
+    void Log(Priority priority, const char* __file, const char* __func, int __line, const char *fmt, ...);
+    void Log2(Priority priority, const char *fmt, ...);
 
 private:
-	void Write(std::string buf);
-	Logger();
+    void Write(std::string buf);
+    Logger();
 
-	std::mutex mutex_;
-	std::ofstream ofs_;
+    std::mutex mutex_;
+    std::ofstream ofs_;
 };
- 
+
 }
 
 #ifdef _DEBUG

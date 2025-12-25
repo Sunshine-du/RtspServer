@@ -55,7 +55,7 @@ public:
 
     uint16_t GetPort()
     { return rtsp_port_; }
-    
+
     bool IsMulticast() const
     { return is_multicast_; }
 
@@ -87,15 +87,15 @@ private:
     int  SendRtpOverTcp(MediaChannelId channel_id, RtpPacket pkt);
     int  SendRtpOverUdp(MediaChannelId channel_id, RtpPacket pkt);
 
-	std::weak_ptr<TcpConnection> rtsp_connection_;
+    std::weak_ptr<TcpConnection> rtsp_connection_;
     std::string rtsp_ip_;
     uint16_t rtsp_port_;
 
     TransportMode transport_mode_;
     bool is_multicast_ = false;
 
-	bool is_closed_ = false;
-	bool has_key_frame_ = false;
+    bool is_closed_ = false;
+    bool has_key_frame_ = false;
 
     uint8_t  frame_type_ = 0;
     uint16_t local_rtp_port_[MAX_MEDIA_CHANNEL];
