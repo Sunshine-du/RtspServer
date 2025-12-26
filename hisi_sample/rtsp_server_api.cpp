@@ -3,7 +3,9 @@
 
 int rtsp_server_start(const char* ip, int port)
 {
-    if (!ip) return 0;
+    if (!ip) {
+        return 0;
+    }
     return RtspManager::Instance().StartServer(ip, port) ? 1 : 0;
 }
 
