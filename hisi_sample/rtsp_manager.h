@@ -18,7 +18,7 @@ class RtspManager {
 public:
     static RtspManager& Instance();
 
-    bool InitServer(const std::string& ip, int port);
+    bool StartServer(const std::string& ip, int port);
     bool CreateSession(int index, bool is_h265);
     bool PushFrame(int index, uint8_t* data, size_t len, bool is_key);
     void StopServer();

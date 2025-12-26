@@ -1,10 +1,10 @@
 #include "rtsp_server_api.h"
 #include "rtsp_manager.h"
 
-int rtsp_server_init(const char* ip, int port)
+int rtsp_server_start(const char* ip, int port)
 {
     if (!ip) return 0;
-    return RtspManager::Instance().InitServer(ip, port) ? 1 : 0;
+    return RtspManager::Instance().StartServer(ip, port) ? 1 : 0;
 }
 
 int rtsp_session_create(int index, int is_h265)

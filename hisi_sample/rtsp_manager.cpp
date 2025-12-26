@@ -6,7 +6,7 @@ RtspManager& RtspManager::Instance()
     return inst;
 }
 
-bool RtspManager::InitServer(const std::string& ip, int port)
+bool RtspManager::StartServer(const std::string& ip, int port)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_server) return true;
@@ -59,7 +59,7 @@ bool RtspManager::CreateSession(int index, bool is_h265)
     ctx.is_h265 = is_h265;
     ctx.session_id = sid;
 
-    printf("RTSP session created: rtsp://%s:%d/%s\n", m_server_ip, m_port, suffix);
+    printf("RTSP session created: rtsp://%s:%d/%s\n", m_server_ip.c_str(), m_port, suffix);
     return true;
 }
 

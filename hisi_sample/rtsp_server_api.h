@@ -11,7 +11,7 @@ extern "C" {
 /* 初始化 RTSP Server
  * 返回 1 成功，0 失败
  */
-int rtsp_server_init(const char* ip, int port);
+int rtsp_server_start(const char* ip, int port);
 
 /* 创建 session
  * index: 0~7  -> live0 ~ live7
