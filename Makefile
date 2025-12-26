@@ -4,6 +4,7 @@ TARGET1 = rtsp_server
 TARGET2 = rtsp_pusher
 TARGET3 = rtsp_h264_file
 TARGET4 = rtsp_h265_file
+TARGET_LIB = libxoprtsp.a
 
 OBJS_PATH = objs
 
@@ -16,7 +17,7 @@ INC  = -I$(shell pwd)/src/ -I$(shell pwd)/src/net -I$(shell pwd)/src/xop -I$(she
 LIB  =
 
 LD_FLAGS  = -lrt -pthread -lpthread -ldl -lm $(DEBUG)
-CXX_FLAGS = -std=c++11
+CXX_FLAGS = -std=c++11 -fPIC
 
 O_FLAG = -O2
 
@@ -38,7 +39,7 @@ OBJS5 = $(patsubst %.cpp,$(OBJS_PATH)/%.o,$(SRC5))
 SRC6  = $(notdir $(wildcard ./example/rtsp_h265_file.cpp))
 OBJS6 = $(patsubst %.cpp,$(OBJS_PATH)/%.o,$(SRC6))
 
-all: BUILD_DIR $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4)
+all: BUILD_DIR $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4) $(TARGET_LIB)
 
 BUILD_DIR:
 	@-mkdir -p $(OBJS_PATH)
@@ -55,6 +56,9 @@ $(TARGET3) : $(OBJS1) $(OBJS2) $(OBJS5)
 $(TARGET4) : $(OBJS1) $(OBJS2) $(OBJS6)
 	$(CXX) $^ -o $@ $(CFLAGS) $(LD_FLAGS) $(CXX_FLAGS)
 
+$(TARGET_LIB): $(OBJS1) $(OBJS2)
+	$(AR) rcs $@ $^
+
 $(OBJS_PATH)/%.o : ./example/%.cpp
 	$(CXX) -c  $< -o  $@  $(CXX_FLAGS) $(INC)
 $(OBJS_PATH)/%.o : ./src/net/%.cpp
@@ -63,4 +67,4 @@ $(OBJS_PATH)/%.o : ./src/xop/%.cpp
 	$(CXX) -c  $< -o  $@  $(CXX_FLAGS) $(INC)
 
 clean:
-	-rm -rf $(OBJS_PATH) $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4)
+	-rm -rf $(OBJS_PATH) $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4) $(TARGET_LIB)
