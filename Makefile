@@ -39,6 +39,9 @@ OBJS5 = $(patsubst %.cpp,$(OBJS_PATH)/%.o,$(SRC5))
 SRC6  = $(notdir $(wildcard ./example/rtsp_h265_file.cpp))
 OBJS6 = $(patsubst %.cpp,$(OBJS_PATH)/%.o,$(SRC6))
 
+SRC7  = $(notdir $(wildcard ./hisi_sample/*.cpp))
+OBJS7 = $(patsubst %.cpp,$(OBJS_PATH)/%.o,$(SRC7))
+
 all: BUILD_DIR $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4) $(TARGET_LIB)
 
 BUILD_DIR:
@@ -56,7 +59,7 @@ $(TARGET3) : $(OBJS1) $(OBJS2) $(OBJS5)
 $(TARGET4) : $(OBJS1) $(OBJS2) $(OBJS6)
 	$(CXX) $^ -o $@ $(CFLAGS) $(LD_FLAGS) $(CXX_FLAGS)
 
-$(TARGET_LIB): $(OBJS1) $(OBJS2)
+$(TARGET_LIB): $(OBJS1) $(OBJS2) $(OBJS7)
 	$(AR) rcs $@ $^
 
 $(OBJS_PATH)/%.o : ./example/%.cpp
@@ -65,6 +68,8 @@ $(OBJS_PATH)/%.o : ./src/net/%.cpp
 	$(CXX) -c  $< -o  $@  $(CXX_FLAGS) $(INC)
 $(OBJS_PATH)/%.o : ./src/xop/%.cpp
 	$(CXX) -c  $< -o  $@  $(CXX_FLAGS) $(INC)
+$(OBJS_PATH)/%.o : ./hisi_sample/%.cpp
+	$(CXX) -c $< -o $@ $(CXX_FLAGS) $(INC)
 
 clean:
 	-rm -rf $(OBJS_PATH) $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4) $(TARGET_LIB)
